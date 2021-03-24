@@ -8,14 +8,30 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			modalVisible: false,
 		};
+
+		this.btnAction = this.btnAction.bind(this);
+	}
+
+	btnAction() {
+		this.setState({
+			modalVisible: !this.state.modalVisible,
+		});
 	}
 
 	render() {
 
 		return (
 			<View style={styles.container}>
-				
+
+				<Button title="Entrar" onPress={this.btnAction}/>
+
+				<Modal transparent={true} animationType='slide' visible={this.state.modalVisible}>
+					<View style={{margin: 15, flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+						<Entrar fechar={this.btnAction}/>
+					</View>
+				</Modal>
 			</View>
 		);
 	}
