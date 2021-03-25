@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Button, Modal } from "react-native";
-import Entrar from './src/modal/entrar'
-
-// PRECISA INSTALAR ANTES DE IMPORTAR
+import { View, Text, StyleSheet } from "react-native";
 
 class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			
 		};
 	}
 
@@ -15,22 +13,18 @@ class App extends Component {
 
 		return (
 			<View style={styles.container}>
-				
+
 			</View>
 		);
 	}
 }
-
+// horizontal={true} por padrão é false.
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingTop: Platform.OS === "android" ? 35 : 0,
 		padding: 10,
-		marginTop: 30,
-		alignItems: 'center',
-		backgroundColor: '#DDD',
-		justifyContent: 'center',
-	},
+	}
 });
 
 export default App;
