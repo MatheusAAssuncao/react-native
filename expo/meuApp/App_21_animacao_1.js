@@ -11,34 +11,37 @@ class App extends Component {
 		};
 
 		// Pode ser sequence ou parallel
-		Animated.sequence([
-			Animated.timing(
-				this.state.larAnimada, 
-				{
-					toValue: 300,
-					duration: 700,
-					useNativeDriver: false,
-				}
-			),
-	
-			Animated.timing(
-				this.state.altAnimada, 
-				{
-					toValue: 150,
-					duration: 700,
-					useNativeDriver: false,
-				}
-			),
-		]).start();
-
-		Animated.timing(
-			this.state.opcAnimada, 
-			{
-				toValue: 0,
-				duration: 2000,
-				useNativeDriver: false,
-			}
+		Animated.loop(
+			Animated.sequence([
+				Animated.timing(
+					this.state.larAnimada, 
+					{
+						toValue: 300,
+						duration: 700,
+						useNativeDriver: false,
+					}
+				),
+		
+				Animated.timing(
+					this.state.altAnimada, 
+					{
+						toValue: 150,
+						duration: 700,
+						useNativeDriver: false,
+					}
+				),
+			
+			])
 		).start();
+
+		// Animated.timing(
+		// 	this.state.opcAnimada, 
+		// 	{
+		// 		toValue: 0,
+		// 		duration: 2000,
+		// 		useNativeDriver: false,
+		// 	}
+		// ).start();
 	}
 
 	render() {
