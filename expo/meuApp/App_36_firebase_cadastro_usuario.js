@@ -8,25 +8,23 @@ LogBox.ignoreAllLogs();
 export default function App() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const [user, setUser] = useState('');
 
-    async function entrar() {
-        await firebase.auth().signInWithEmailAndPassword(email, pass).then((value) => {
-            alert('Bem-vindo ' + value.user.email);
-            setUser(value.user.email);
+    async function cadastrar() {
+        await firebase.auth().createUserWithEmailAndPassword(email, pass).then((value) => {
+            alert('Usuário criado ' + value.user.email);
         }).catch((error) => {
-            alert('Ops, algo deu errado');
+            if (error.code == 'auth/weak-password') {
+                alert('Sua senha deve ter pelo menos 6 caracteres');
+            } else if (error.code == 'auth/invalid-email') {
+                alert('E-mail inválido');
+            } else {
+                alert('Ops, algo deu errado');
+            }
             return;
         });
 
         setEmail('');
         setPass('');
-    }
-
-    async function sair() {
-        await firebase.auth().signOut();
-        setUser('');
-        alert('Você saiu.');
     }
 
     return (
@@ -38,17 +36,7 @@ export default function App() {
             <Text style={styles.texto}>Senha</Text>
             <TextInput style={styles.input} onChangeText={(texto) => setPass(texto)} value={pass} secureTextEntry={true}/>
 
-            <Button title="Entrar" onPress={entrar}/>
-
-            <Text style={{marginTop: 20, marginBottom: 20, fontSize: 23, textAlign: 'center'}}>{user}</Text>
-            
-            {user.length > 0 ? 
-            (
-                <Button title="Sair" onPress={sair}/>
-            ) : 
-            (
-                <Text style={{marginTop: 20, marginBottom: 20, fontSize: 23, textAlign: 'center'}}>Nenhum usuário logado</Text>
-            )}
+            <Button title="Cadastrar" onPress={cadastrar}/>
         </View>
     );
 }

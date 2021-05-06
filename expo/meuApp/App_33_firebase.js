@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, LogBox } from 'react-native';
 import firebase from './src/firebaseConnection';
 
 // remove alerta de consulta no banco
-console.disableYellowBox = true;
+LogBox.ignoreAllLogs();
 
 export default function App() {
     const [nome, setNome] = useState('Carregando...');

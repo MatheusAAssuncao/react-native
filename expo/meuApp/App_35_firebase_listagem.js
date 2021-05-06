@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, LogBox } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, FlatList, ActivityIndicator, LogBox } from 'react-native';
 import firebase from './src/firebaseConnection';
+import Listagem from './src/firebase/Listagem'
 
 // remove alerta de consulta no banco
 LogBox.ignoreAllLogs();
@@ -8,6 +9,30 @@ LogBox.ignoreAllLogs();
 export default function App() {
     const [nome, setNome] = useState('');
     const [cargo, setCargo] = useState('');
+    const [usuarios, setUsuarios] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function dados() {
+
+            // monitor de alteração do database automático. atualiza automaticamente
+            await firebase.database().ref('usuarios').on('value', (snapshot) => {
+                setUsuarios([]);
+                snapshot.forEach((childItem) => {
+                    let data = {
+                        key: childItem.key,
+                        nome: childItem.val().nome,
+                        cargo: childItem.val().cargo,
+                    };
+                    // o reverse serve para aparecer em ordem decrescente
+                    setUsuarios(oldArray => [...oldArray, data].reverse());
+                });
+                setLoading(false);
+            });
+        }
+
+        dados();
+    }, []);
 
     async function cadastrar() {
         if (nome !== '' && cargo !== '') {
@@ -34,6 +59,14 @@ export default function App() {
             <TextInput style={styles.input} onChangeText={(texto) => setCargo(texto)} value={cargo}/>
 
             <Button title="Novo Funcionário" onPress={cadastrar}/>
+
+            {loading ? (
+                <ActivityIndicator color='#121212' size={45} />
+            ) :
+            (
+                <FlatList keyExtractor={item => item.key} data={usuarios} renderItem={ ({item}) => ( <Listagem data={item}/>) }/>
+            )
+            }
         </View>
     );
 }
