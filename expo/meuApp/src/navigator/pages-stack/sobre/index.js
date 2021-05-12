@@ -4,7 +4,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 export default function Sobre({ route }) {
 
-    const navegation = useNavigation();
+    var navegation = useNavigation();
     navegation.setOptions({
         title: `Sobre ${route.params?.nome}`,
     });
